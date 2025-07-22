@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroupConnect - Mentor Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark gradient-bg shadow-lg">
+        <div class="container mx-auto px-4">
+            <a class="navbar-brand flex items-center" href="index.html">
+                <i class="bi bi-people-fill text-2xl mr-2"></i>
+                <span class="text-xl font-bold">GroupConnect</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house-door me-1"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#features"><i class="bi bi-stars me-1"></i> Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#mentors"><i class="bi bi-mortarboard-fill me-1"></i> Mentors</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#about"><i class="bi bi-info-circle me-1"></i> About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mentor-register.html"><i class="bi bi-person-plus-fill me-1"></i> Mentor Register</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mentor-login.html"><i class="bi bi-mortarboard-fill me-1"></i> Mentor Login</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="mentor-dashboard.html"><i class="bi bi-speedometer2 me-1"></i> Mentor Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mentors-view.html"><i class="bi bi-person-lines-fill me-1"></i> View Mentors</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mentor Dashboard Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 text-center">Mentor Dashboard</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Profile Summary -->
+                <div class="bg-white p-6 rounded-xl shadow-lg card-hover">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="bi bi-person-circle text-blue-500 me-2"></i> Your Profile
+                    </h3>
+                    <div class="flex items-center mb-4">
+                        <img id="profile-image" src="https://via.placeholder.com/100" alt="Profile Image" class="w-24 h-24 rounded-full mr-4">
+                        <div>
+                            <h4 id="full-name" class="text-lg font-medium">Loading...</h4>
+                            <p id="role" class="text-gray-600">Loading...</p>
+                        </div>
+                    </div>
+                    <p id="bio" class="text-gray-600 mb-2"><strong>Bio:</strong> Loading...</p>
+                    <p id="expertise" class="text-gray-600"><strong>Expertise:</strong> Loading...</p>
+                    <button class="btn btn-outline-primary mt-4 w-full flex items-center justify-center">
+                        <i class="bi bi-pencil-fill me-2"></i> Edit Profile
+                    </button>
+                </div>
+                <!-- Session Management -->
+                <div class="bg-white p-6 rounded-xl shadow-lg card-hover">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="bi bi-calendar-event text-purple-500 me-2"></i> Manage Sessions
+                    </h3>
+                    <p class="text-gray-600 mb-4">Schedule and manage your mentorship sessions.</p>
+                    <ul id="sessions-list" class="space-y-3">
+                        <li class="text-gray-600">No sessions scheduled.</li>
+                    </ul>
+                    <button class="btn btn-primary mt-4 w-full gradient-bg text-white flex items-center justify-center">
+                        <i class="bi bi-plus-circle me-2"></i> Schedule New Session
+                    </button>
+                </div>
+                <!-- Mentees -->
+                <div class="bg-white p-6 rounded-xl shadow-lg card-hover">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="bi bi-people-fill text-green-500 me-2"></i> Your Mentees
+                    </h3>
+                    <p class="text-gray-600 mb-4">View and manage your mentees.</p>
+                    <ul id="mentees-list" class="space-y-3">
+                        <li class="text-gray-600">No mentees assigned.</li>
+                    </ul>
+                    <button class="btn btn-outline-primary mt-4 w-full flex items-center justify-center">
+                        <i class="bi bi-person-plus me-2"></i> View All Mentees
+                    </button>
+                </div>
+                <!-- Quick Stats -->
+                <div class="bg-white p-6 rounded-xl shadow-lg card-hover">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="bi bi-graph-up text-yellow-500 me-2"></i> Quick Stats
+                    </h3>
+                    <p class="text-gray-600 mb-4">Your mentorship impact at a glance.</p>
+                    <div class="space-y-3">
+                        <p><strong>Sessions Conducted:</strong> <span id="sessions-count">0</span></p>
+                        <p><strong>Mentees Guided:</strong> <span id="mentees-count">0</span></p>
+                        <p><strong>Average Rating:</strong> <span id="rating">N/A</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2023 GroupConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize sample data if none exists
+        if (!localStorage.getItem('mentors')) {
+            const sampleMentors = [
+                {
+                    fullName: 'John Doe',
+                    email: 'john@example.com',
+                    password: 'password123',
+                    profileImage: 'https://via.placeholder.com/100',
+                    role: 'tech-mentor',
+                    bio: 'Experienced software engineer with a passion for mentoring startups.',
+                    expertise: '10+ years in AI, cloud computing, and agile methodologies.',
+                    type: 'mentor',
+                    sessions: [
+                        { team: 'Team A', date: '2025-05-25', time: '10:00 AM' },
+                        { team: 'Team B', date: '2025-05-26', time: '2:00 PM' }
+                    ],
+                    mentees: [
+                        { name: 'Jane Smith', role: 'Startup Founder' },
+                        { name: 'Mike Johnson', role: 'Project Manager' }
+                    ]
+                }
+            ];
+            localStorage.setItem('mentors', JSON.stringify(sampleMentors));
+        }
+
+        // Load mentor data
+        const mentor = JSON.parse(localStorage.getItem('currentMentor'));
+        if (mentor) {
+            document.getElementById('full-name').textContent = mentor.fullName;
+            document.getElementById('role').textContent = mentor.role.replace('-', ' ').toUpperCase();
+            document.getElementById('bio').innerHTML = `<strong>Bio:</strong> ${mentor.bio}`;
+            document.getElementById('expertise').innerHTML = `<strong>Expertise:</strong> ${mentor.expertise}`;
+            document.getElementById('profile-image').src = mentor.profileImage;
+
+            const sessionsList = document.getElementById('sessions-list');
+            const menteesList = document.getElementById('mentees-list');
+            const sessionsCount = document.getElementById('sessions-count');
+            const menteesCount = document.getElementById('mentees-count');
+            const rating = document.getElementById('rating');
+
+            // Populate sessions
+            sessionsList.innerHTML = '';
+            if (mentor.sessions && mentor.sessions.length > 0) {
+                mentor.sessions.forEach(session => {
+                    const li = document.createElement('li');
+                    li.className = 'flex justify-between items-center';
+                    li.innerHTML = `<span>${session.team}</span><span class="text-gray-500">${session.date}, ${session.time}</span>`;
+                    sessionsList.appendChild(li);
+                });
+            } else {
+                sessionsList.innerHTML = '<li class="text-gray-600">No sessions scheduled.</li>';
+            }
+
+            // Populate mentees
+            menteesList.innerHTML = '';
+            if (mentor.mentees && mentor.mentees.length > 0) {
+                mentor.mentees.forEach(mentee => {
+                    const li = document.createElement('li');
+                    li.className = 'flex justify-between items-center';
+                    li.innerHTML = `<span>${mentee.name}</span><span class="text-gray-500">${mentee.role}</span>`;
+                    menteesList.appendChild(li);
+                });
+            } else {
+                menteesList.innerHTML = '<li class="text-gray-600">No mentees assigned.</li>';
+            }
+
+            // Update stats
+            sessionsCount.textContent = mentor.sessions ? mentor.sessions.length : 0;
+            menteesCount.textContent = mentor.mentees ? mentor.mentees.length : 0;
+            rating.textContent = mentor.rating || 'N/A';
+        } else {
+            window.location.href = 'mentor-login.html'; // Redirect if not logged in
+        }
+    </script>
+</body>
+</html>
