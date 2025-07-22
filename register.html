@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - GroupConnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .register-card {
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .input-group {
+            position: relative;
+        }
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #6b7280;
+        }
+        .form-control {
+            padding-left: 45px;                
+            height: 50px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s;
+        }
+        .form-control:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        .password-strength {
+            height: 4px;
+            transition: width 0.3s;
+        }
+        .form-select {
+            padding-left: 45px;
+            height: 50px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s;
+        }
+        .form-select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Main Content -->
+    <div class="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white register-card p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <i class="bi bi-people-fill text-5xl text-purple-500 mb-4"></i>
+                <h2 class="text-3xl font-bold text-gray-800">Create Your Account</h2>
+                <p class="text-gray-600 mt-2">Join our community today</p>
+            </div>
+
+            <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-4">
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <div class="input-group">
+                        <i class="bi bi-person input-icon"></i>
+                        <input type="text" id="name" class="form-control w-full" placeholder="John Doe" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="userType" class="block text-sm font-medium text-gray-700 mb-1">Account Type</label>
+                    <div class="input-group">
+                        <i class="bi bi-person-circle input-icon"></i>
+                        <select id="userType" class="form-select w-full" required>
+                            <option value="" disabled selected>Select account type</option>
+                            <option value="User">User</option>
+                            <option value="Mentor">Mentor</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <div class="input-group">
+                        <i class="bi bi-envelope input-icon"></i>
+                        <input type="email" id="email" class="form-control w-full" placeholder="you@example.com" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <div class="input-group">
+                        <i class="bi bi-lock input-icon"></i>
+                        <input type="password" id="password" class="form-control w-full" placeholder="••••••••" required oninput="checkPasswordStrength()">
+                        <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700" onclick="togglePassword()">
+                            <i class="bi bi-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                    <div class="mt-2">
+                        <div class="flex justify-between text-xs text-gray-500">
+                            <span>Password Strength:</span>
+                            <span id="strengthText">Weak</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-1.5 mt-1">
+                            <div id="strengthBar" class="password-strength bg-red-500 rounded-full h-1.5" style="width: 20%"></div>
+                        </div>
+                    </div>
+                    <ul class="mt-2 text-xs text-gray-500 list-disc list-inside">
+                        <li id="length" class="text-red-500">At least 8 characters</li>
+                        <li id="uppercase" class="text-red-500">One uppercase letter</li>
+                        <li id="number" class="text-red-500">One number</li>
+                        <li id="special" class="text-red-500">One special character</li>
+                    </ul>
+                </div>
+
+                <div class="mb-4">
+                    <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                    <div class="input-group">
+                        <i class="bi bi-lock input-icon"></i>
+                        <input type="password" id="confirmPassword" class="form-control w-full" placeholder="••••••••" required>
+                    </div>
+                    <p id="passwordMatch" class="text-xs mt-1 hidden"></p>
+                </div>
+
+                <div class="flex items-center mb-4">
+                    <input type="checkbox" id="terms" class="h-4 w-4 text-purple-500 focus:ring-purple-500 border-gray-300 rounded" required>
+                    <label for="terms" class="ml-2 block text-sm text-gray-700">
+                        I agree to the <a href="#" class="text-purple-500 hover:text-purple-700">Terms of Service</a> and <a href="#" class="text-purple-500 hover:text-purple-700">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-500 hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-150">
+                    <i class="bi bi-person-plus mr-2"></i> Create Account
+                </button>
+
+                <div class="relative my-6">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-white text-gray-500">Or sign up with</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <a href="#" class="w-full inline-flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        <i class="bi bi-google text-red-500 mr-2"></i> Google
+                    </a>
+                    <a href="#" class="w-full inline-flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        <i class="bi bi-microsoft text-blue-500 mr-2"></i> Microsoft
+                    </a>
+                </div>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Already have an account?
+                    <a href="login.html" class="font-medium text-purple-500 hover:text-purple-700 ml-1">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirmPassword');
+            const icon = document.getElementById('toggleIcon');
+            
+            const toggleField = (field) => {
+                if (field.type === 'password') {
+                    field.type = 'text';
+                } else {
+                    field.type = 'password';
+                }
+            };
+            
+            toggleField(password);
+            if (confirmPassword) toggleField(confirmPassword);
+            
+            icon.classList.toggle('bi-eye');
+            icon.classList.toggle('bi-eye-slash');
+        }
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthBar = document.getElementById('strengthBar');
+            const strengthText = document.getElementById('strengthText');
+            const requirements = {
+                length: document.getElementById('length'),
+                uppercase: document.getElementById('uppercase'),
+                number: document.getElementById('number'),
+                special: document.getElementById('special')
+            };
+            
+            let strength = 0;
+            
+            // Check length
+            if (password.length >= 8) {
+                strength += 25;
+                requirements.length.classList.remove('text-red-500');
+                requirements.length.classList.add('text-green-500');
+            } else {
+                requirements.length.classList.remove('text-green-500');
+                requirements.length.classList.add('text-red-500');
+            }
+            
+            // Check uppercase letters
+            if (/[A-Z]/.test(password)) {
+                strength += 25;
+                requirements.uppercase.classList.remove('text-red-500');
+                requirements.uppercase.classList.add('text-green-500');
+            } else {
+                requirements.uppercase.classList.remove('text-green-500');
+                requirements.uppercase.classList.add('text-red-500');
+            }
+            
+            // Check numbers
+            if (/[0-9]/.test(password)) {
+                strength += 25;
+                requirements.number.classList.remove('text-red-500');
+                requirements.number.classList.add('text-green-500');
+            } else {
+                requirements.number.classList.remove('text-green-500');
+                requirements.number.classList.add('text-red-500');
+            }
+            
+            // Check special characters
+            if (/[^A-Za-z0-9]/.test(password)) {
+                strength += 25;
+                requirements.special.classList.remove('text-red-500');
+                requirements.special.classList.add('text-green-500');
+            } else {
+                requirements.special.classList.remove('text-green-500');
+                requirements.special.classList.add('text-red-500');
+            }
+            
+            // Update strength bar
+            strengthBar.style.width = strength + '%';
+            
+            // Update strength text and color
+            if (strength < 50) {
+                strengthBar.className = 'password-strength bg-red-500 rounded-full h-1.5';
+                strengthText.textContent = 'Weak';
+                strengthText.className = 'text-red-500';
+            } else if (strength < 75) {
+                strengthBar.className = 'password-strength bg-yellow-500 rounded-full h-1.5';
+                strengthText.textContent = 'Moderate';
+                strengthText.className = 'text-yellow-500';
+            } else {
+                strengthBar.className = 'password-strength bg-green-500 rounded-full h-1.5';
+                strengthText.textContent = 'Strong';
+                strengthText.className = 'text-green-500';
+            }
+            
+            // Check password match
+            const confirmPassword = document.getElementById('confirmPassword');
+            if (confirmPassword && confirmPassword.value) {
+                checkPasswordMatch();
+            }
+        }
+        
+        function checkPasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const matchText = document.getElementById('passwordMatch');
+            
+            if (password && confirmPassword) {
+                if (password === confirmPassword) {
+                    matchText.textContent = 'Passwords match!';
+                    matchText.className = 'text-xs mt-1 text-green-500';
+                    matchText.classList.remove('hidden');
+                } else {
+                    matchText.textContent = 'Passwords do not match!';
+                    matchText.className = 'text-xs mt-1 text-red-500';
+                    matchText.classList.remove('hidden');
+                }
+            }
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const userType = document.getElementById('userType').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Validate user type
+            if (!userType) {
+                showAlert('Please select an account type', 'error');
+                return;
+            }
+            
+            // Validate password match
+            if (password !== confirmPassword) {
+                showAlert('Passwords do not match', 'error');
+                return;
+            }
+            
+            // Validate terms
+            if (!document.getElementById('terms').checked) {
+                showAlert('You must agree to the terms and conditions', 'error');
+                return;
+            }
+            
+            // Simulate loading
+            const btn = event.target.querySelector('button[type="submit"]');
+            btn.innerHTML = '<i class="bi bi-arrow-repeat animate-spin mr-2"></i> Creating account...';
+            btn.disabled = true;
+            
+            // Check if email exists (using timeout to simulate API call)
+            setTimeout(() => {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                if (users.find(u => u.email === email)) {
+                    showAlert('Email already registered', 'error');
+                    btn.innerHTML = '<i class="bi bi-person-plus mr-2"></i> Create Account';
+                    btn.disabled = false;
+                    return;
+                }
+                
+                const user = { name, userType, email, password };
+                users.push(user);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                showAlert('Registration successful! Redirecting...', 'success');
+                
+                // Redirect after delay
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            }, 1500);
+        }
+
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `fixed top-4 right-4 z-50 px-6 py-4 rounded-md shadow-lg ${
+                type === 'error' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
+            }`;
+            alertDiv.innerHTML = `
+                <div class="flex items-center">
+                    <i class="bi ${type === 'error' ? 'bi-exclamation-triangle' : 'bi-check-circle'} mr-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                setTimeout(() => alertDiv.remove(), 300);
+            }, 3000);
+        }
+
+        // Initialize password match checking
+        document.getElementById('confirmPassword').addEventListener('input', checkPasswordMatch);
+    </script>
+</body>
+</html>
