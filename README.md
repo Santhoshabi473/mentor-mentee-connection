@@ -16,7 +16,7 @@ This project features a modern and responsive login page built with **Tailwind C
 - `login.html` — Main login page
 
 🌐 Live Preview
-[Click here to view](https://yourusername.github.io/groupconnect-login-page/) 
+[Click here to view]( https://santhoshabi473.github.io/mentor-mentee-connection/) 
 
 🛠️ Technologies Used
 - HTML5
@@ -24,9 +24,50 @@ This project features a modern and responsive login page built with **Tailwind C
 - Bootstrap v5.1.3
 - Bootstrap Icons
 
-📸 Preview
+GroupConnect – Team Collaboration Platform
+
+GroupConnect is a modern, responsive team collaboration platform that includes a landing page, login UI, and support for future features like registration and dashboard.
+
+Built using Tailwind CSS and Bootstrap 5, it’s designed for smooth user experience and fast performance across all devices.
+
+---
+
+🔥 Features
+
+- 🏠 Elegant homepage with feature highlights
+- 🔐 Login page with local storage user simulation
+- 🧠 Clean UI using Tailwind + Bootstrap combo
+- 🔄 Responsive layout (Mobile, Tablet, Desktop)
+- 🔒 Password visibility toggle
+- 🌐 Social login buttons (UI only)
+- 🎨 Polished design with professional icons
+
+---
+
+📁 Files Included
+
+| File         | Description                        |
+|--------------|------------------------------------|
+| `index.html` | Landing/home page                  |
+| `login.html` | Login screen with local auth logic |
+
+---
+
+🛠️ Tech Stack
+
+- **HTML5**
+- **Tailwind CSS** v2.2.19
+- **Bootstrap** v5.1.3
+- **Bootstrap Icons**
+---
 
 
 
-📄 License
-This project is open-source and available under the [MIT License](LICENSE).
+
+🙌 Author
+
+Designed & developed by **Santhosh Abi**
+
+---
+
+
