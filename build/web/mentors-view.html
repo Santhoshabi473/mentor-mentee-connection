@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroupConnect - View All Mentors</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .mentor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark gradient-bg shadow-lg">
+        <div class="container mx-auto px-4">
+            <a class="navbar-brand flex items-center" href="index.html">
+                <i class="bi bi-people-fill text-2xl mr-2"></i>
+                <span class="text-xl font-bold">GroupConnect</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house-door me-1"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#features"><i class="bi bi-stars me-1"></i> Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#mentors"><i class="bi bi-mortarboard-fill me-1"></i> Mentors</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#about"><i class="bi bi-info-circle me-1"></i> About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="register.html"><i class="bi bi-person-plus me-1"></i> Register</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html"><i class="bi bi-box-arrow-in-right me-1"></i> Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mentor-register.html"><i class="bi bi-person-plus-fill me-1"></i> Mentor Register</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mentor-login.html"><i class="bi bi-mortarboard-fill me-1"></i> Mentor Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mentor-dashboard.html"><i class="bi bi-speedometer2 me-1"></i> Mentor Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="mentors-view.html"><i class="bi bi-person-lines-fill me-1"></i> View Mentors</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- View Mentors Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 text-center">Our Mentors</h2>
+            <p class="text-gray-600 mb-12 text-center max-w-2xl mx-auto">Connect with our talented mentors to guide your team to success.</p>
+            <div id="mentors-grid" class="grid md:grid-cols-3 gap-8">
+                <!-- Mentors will be dynamically inserted here -->
+            </div>
+            <p id="no-mentors" class="text-gray-600 text-center mt-8 hidden">No mentors available.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2023 GroupConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Load mentors from local storage
+        const mentors = JSON.parse(localStorage.getItem('mentors')) || [];
+        const mentorsGrid = document.getElementById('mentors-grid');
+        const noMentorsMessage = document.getElementById('no-mentors');
+
+        if (mentors.length > 0) {
+            mentors.forEach(mentor => {
+                const mentorCard = document.createElement('div');
+                mentorCard.className = 'mentor-card bg-white p-6 rounded-xl shadow-lg transition duration-300';
+                mentorCard.innerHTML = `
+                    <div class="flex items-center mb-4">
+                        <img src="${mentor.profileImage}" alt="${mentor.fullName}" class="w-20 h-20 rounded-full mr-4">
+                        <div>
+                            <h3 class="text-xl font-semibold">${mentor.fullName}</h3>
+                            <p class="text-gray-600">${mentor.role.replace('-', ' ').toUpperCase()}</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-2"><strong>Bio:</strong> ${mentor.bio}</p>
+                    <p class="text-gray-600 mb-4"><strong>Expertise:</strong> ${mentor.expertise}</p>
+                    <button class="btn btn-primary w-full gradient-bg text-white flex items-center justify-center">
+                        <i class="bi bi-person-video3 me-2"></i> Book a Session
+                    </button>
+                `;
+                mentorsGrid.appendChild(mentorCard);
+            });
+        } else {
+            noMentorsMessage.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

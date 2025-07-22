@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - GroupConnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .dashboard-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar {
+            width: 250px;
+            transition: all 0.3s;
+        }
+        .sidebar-collapsed {
+            width: 80px;
+        }
+        .main-content {
+            margin-left: 250px;
+            transition: all 0.3s;
+        }
+        .main-content-collapsed {
+            margin-left: 80px;
+        }
+        .group-item, .mentor-card {
+            transition: all 0.2s;
+        }
+        .group-item:hover, .mentor-card:hover {
+            background-color: #f8f9fa;
+        }
+        .input-group {
+            position: relative;
+        }
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #6b7280;
+        }
+        .form-control {
+            padding-left: 45px;
+            height: 50px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s;
+        }
+        .form-control:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        .form-select {
+            padding-left: 45px;
+            height: 50px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s;
+        }
+        .form-select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Sidebar -->
+    <div class="sidebar bg-white shadow-lg fixed h-full" id="sidebar">
+        <div class="p-4 flex items-center justify-between border-b">
+            <a href="dashboard.html" class="flex items-center">
+                <i class="bi bi-people-fill text-2xl text-purple-500 mr-2"></i>
+                <span class="text-xl font-bold" id="brand-text">GroupConnect</span>
+            </a>
+            <button id="toggle-sidebar" class="text-gray-500 hover:text-gray-700">
+                <i class="bi bi-list"></i>
+            </button>
+        </div>
+        <div class="p-4">
+            <div class="flex items-center mb-6 p-2 rounded-lg bg-purple-50">
+                <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold" id="user-avatar">
+                    <!-- Initials will be added by JS -->
+                </div>
+                <div class="ml-3" id="user-info">
+                    <p class="font-medium" id="sidebar-user-name"></p>
+                    <p class="text-xs text-gray-500" id="sidebar-user-email"></p>
+                </div>
+            </div>
+            
+            <ul class="space-y-2">
+                <li>
+                    <a href="dashboard.html" class="flex items-center p-2 rounded-lg text-purple-600 bg-purple-50">
+                        <i class="bi bi-speedometer2 mr-3"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="creategroup.html" class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                        <i class="bi bi-plus-circle mr-3"></i>
+                        <span>Create Group</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="groupmessages.html" class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                        <i class="bi bi-chat-square-text mr-3"></i>
+                        <span>Group Messages</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="messages.html" class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                        <i class="bi bi-envelope mr-3"></i>
+                        <span>Private Messages</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="addmember.html" class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                        <i class="bi bi-person-plus mr-3"></i>
+                        <span>Add Members</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://meet.google.com" target="_blank" class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                        <i class="bi bi-camera-video mr-3"></i>
+                        <span>Video Meetings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content min-h-screen" id="main-content">
+        <!-- Top Navigation -->
+        <nav class="gradient-bg text-white p-4 shadow-md">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <button id="mobile-toggle" class="mr-4 text-white md:hidden">
+                        <i class="bi bi-list text-2xl"></i>
+                    </button>
+                    <h1 class="text-xl font-bold">Dashboard</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button class="text-white">
+                            <i class="bi bi-bell text-xl"></i>
+                            <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </button>
+                    </div>
+                    <button onclick="handleLogout()" class="flex items-center text-white hover:bg-white/10 p-2 rounded-lg">
+                        <i class="bi bi-box-arrow-right mr-2"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard Content -->
+        <div class="p-6">
+            <!-- Welcome Card -->
+            <div class="bg-white dashboard-card p-6 rounded-lg shadow-lg mb-6">
+                <div class="flex items-center">
+                    <div class="w-16 h-16 rounded-full bg-purple-500 flex items-center justify-center text-white text-2xl font-bold mr-4" id="welcome-avatar">
+                        <!-- Initials will be added by JS -->
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold">Welcome back, <span id="userName" class="text-purple-600"></span>!</h2>
+                        <p class="text-gray-600">Email: <span id="userEmail" class="font-medium"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="bg-white dashboard-card p-6 rounded-lg shadow-lg mb-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Your Profile</h3>
+                <form id="profileForm" onsubmit="saveProfile(event)" class="space-y-4">
+                    <div class="mb-4">
+                        <label for="profileName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <div class="input-group">
+                            <i class="bi bi-person input-icon"></i>
+                            <input type="text" id="profileName" class="form-control w-full" placeholder="Your name" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="bio" class="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+                        <div class="input-group">
+                            <i class="bi bi-person-lines-fill input-icon"></i>
+                            <textarea id="bio" class="form-control w-full" rows="4" placeholder="Tell us about yourself..."></textarea>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="interests" class="block text-sm font-medium text-gray-700 mb-1">Interests</label>
+                        <div class="input-group">
+                            <i class="bi bi-star input-icon"></i>
+                            <input type="text" id="interests" class="form-control w-full" placeholder="e.g., Coding, Design, Leadership">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-500 hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-150">
+                        <i class="bi bi-save mr-2"></i> Save Profile
+                    </button>
+                </form>
+            </div>
+
+            <!-- Messaging Section -->
+            <div class="bg-white dashboard-card p-6 rounded-lg shadow-lg mb-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Send Message to Mentor</h3>
+                <form id="messageForm" onsubmit="sendMessage(event)" class="space-y-4">
+                    <div class="mb-4">
+                        <label for="recipientEmail" class="block text-sm font-medium text-gray-700 mb-1">Recipient Mentor</label>
+                        <div class="input-group">
+                            <i class="bi bi-envelope input-icon"></i>
+                            <select id="recipientEmail" class="form-select w-full" required>
+                                <option value="" disabled selected>Select a mentor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                        <div class="input-group">
+                            <i class="bi bi-chat-left-text input-icon"></i>
+                            <textarea id="message" class="form-control w-full" rows="4" placeholder="Type your message..." required></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-500 hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-150">
+                        <i class="bi bi-send mr-2"></i> Send Message
+                    </button>
+                </form>
+                <div id="messageList" class="mt-4"></div>
+            </div>
+
+            <!-- Mentors Section -->
+            <div class="bg-white dashboard-card p-6 rounded-lg shadow-lg mb-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Available Mentors</h3>
+                <div id="mentorList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+
+            <!-- Your Groups -->
+            <div class="bg-white dashboard-card p-6 rounded-lg shadow-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">Your Groups</h3>
+                    <a href="creategroup.html" class="btn btn-sm btn-primary">
+                        <i class="bi bi-plus-lg mr-1"></i> New Group
+                    </a>
+                </div>
+                
+                <div id="groupList" class="space-y-3">
+                    <!-- Groups will be loaded here -->
+                    <div class="text-center py-8">
+                        <i class="bi bi-people text-4xl text-gray-300 mb-2"></i>
+                        <p class="text-gray-500">No groups found. Create your first group!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get current user from localStorage
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+        // Check if user is logged in
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        }
+
+        // Display user info
+        function displayUser() {
+            const initials = currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase();
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userEmail').textContent = currentUser.email;
+            document.getElementById('sidebar-user-name').textContent = currentUser.name;
+            document.getElementById('sidebar-user-email').textContent = currentUser.email;
+            document.getElementById('user-avatar').textContent = initials;
+            document.getElementById('welcome-avatar').textContent = initials;
+            document.getElementById('profileName').value = currentUser.name;
+            document.getElementById('bio').value = currentUser.profile?.bio || '';
+            document.getElementById('interests').value = currentUser.profile?.interests || '';
+        }
+
+        // Save profile
+        function saveProfile(event) {
+            event.preventDefault();
+            const name = document.getElementById('profileName').value;
+            const bio = document.getElementById('bio').value;
+            const interests = document.getElementById('interests').value;
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const userIndex = users.findIndex(u => u.email === currentUser.email);
+            if (userIndex !== -1) {
+                users[userIndex].name = name;
+                users[userIndex].profile = { bio, interests };
+                localStorage.setItem('users', JSON.stringify(users));
+                currentUser.name = name;
+                currentUser.profile = { bio, interests };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                showAlert('Profile saved successfully!', 'success');
+                displayUser();
+            }
+        }
+
+        // Logout function
+        function handleLogout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+
+        // Delete group function
+        function handleDeleteGroup(groupName) {
+            if (confirm(`Are you sure you want to delete the group "${groupName}"?`)) {
+                let groups = JSON.parse(localStorage.getItem('groups') || '[]');
+                groups = groups.filter(g => g.name !== groupName);
+                localStorage.setItem('groups', JSON.stringify(groups));
+                displayGroups();
+                showAlert('Group deleted successfully!', 'success');
+            }
+        }
+
+        // Display groups
+        function displayGroups() {
+            const groups = JSON.parse(localStorage.getItem('groups') || '[]')
+                .filter(g => g.members.includes(currentUser.email));
+            const groupList = document.getElementById('groupList');
+            
+            if (groups.length === 0) {
+                groupList.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="bi bi-people text-4xl text-gray-300 mb-2"></i>
+                        <p class="text-gray-500">No groups found. Create your first group!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            groups.forEach(group => {
+                html += `
+                    <div class="group-item p-4 border rounded-lg flex justify-between items-center">
+                        <div>
+                            <h4 class="font-bold text-lg text-gray-800">${group.name}</h4>
+                            <p class="text-gray-600 mb-1">${group.description || 'No description'}</p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="bi bi-people mr-1"></i>
+                                <span>${group.members.length} members</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <a href="groupmessages.html?group=${encodeURIComponent(group.name)}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-chat-left-text"></i>
+                            </a>
+                            <button onclick="handleDeleteGroup('${group.name}')" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            groupList.innerHTML = html;
+        }
+
+        // Load mentor list
+        function loadMentorList() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const mentorList = document.getElementById('mentorList');
+            mentorList.innerHTML = '';
+            const mentors = users.filter(u => u.userType === 'Mentor');
+            if (mentors.length) {
+                mentors.forEach(mentor => {
+                    const card = document.createElement('div');
+                    card.className = 'mentor-card bg-gray-100 p-4 rounded-lg';
+                    card.innerHTML = `
+                        <h4 class="text-lg font-medium text-gray-800">${mentor.name}</h4>
+                        <p class="text-gray-600">${mentor.profile?.bio || 'No bio available'}</p>
+                        <p class="text-gray-600"><strong>Expertise:</strong> ${mentor.profile?.expertise || 'Not specified'}</p>
+                        <button onclick="selectMentorToMessage('${mentor.email}')" class="mt-2 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-500 hover:bg-purple-600">
+                            <i class="bi bi-send mr-2"></i> Message
+                        </button>
+                    `;
+                    mentorList.appendChild(card);
+                });
+            } else {
+                mentorList.innerHTML = '<p class="text-gray-500">No mentors available.</p>';
+            }
+        }
+
+        // Select mentor to message
+        function selectMentorToMessage(email) {
+            document.getElementById('recipientEmail').value = email;
+        }
+
+        // Load recipient options for messaging
+        function loadRecipientOptions() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const recipientSelect = document.getElementById('recipientEmail');
+            recipientSelect.innerHTML = '<option value="" disabled selected>Select a mentor</option>';
+            users.filter(u => u.userType === 'Mentor').forEach(user => {
+                const option = document.createElement('option');
+                option.value = user.email;
+                option.textContent = `${user.name} (${user.email})`;
+                recipientSelect.appendChild(option);
+            });
+        }
+
+        // Send message
+        function sendMessage(event) {
+            event.preventDefault();
+            const recipientEmail = document.getElementById('recipientEmail').value;
+            const message = document.getElementById('message').value;
+            if (!recipientEmail) {
+                showAlert('Please select a recipient mentor.', 'error');
+                return;
+            }
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const recipient = users.find(u => u.email === recipientEmail);
+            if (!recipient || recipient.userType !== 'Mentor') {
+                showAlert('Invalid recipient. Please select a mentor.', 'error');
+                return;
+            }
+            const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+            messages.push({
+                sender: currentUser.email,
+                recipient: recipientEmail,
+                message,
+                timestamp: new Date().toISOString()
+            });
+            localStorage.setItem('messages', JSON.stringify(messages));
+            showAlert('Message sent successfully!', 'success');
+            document.getElementById('message').value = '';
+            loadMessageList();
+        }
+
+        // Load message list
+        function loadMessageList() {
+            const messageList = document.getElementById('messageList');
+            messageList.innerHTML = '<h4 class="text-lg font-medium text-gray-700 mb-2">Your Messages</h4>';
+            const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+            const userMessages = messages.filter(m => m.sender === currentUser.email || m.recipient === currentUser.email);
+            if (userMessages.length) {
+                const ul = document.createElement('ul');
+                ul.className = 'list-disc list-inside text-gray-600';
+                userMessages.forEach(msg => {
+                    const li = document.createElement('li');
+                    const sender = JSON.parse(localStorage.getItem('users') || '[]').find(u => u.email === msg.sender)?.name || msg.sender;
+                    const recipient = JSON.parse(localStorage.getItem('users') || '[]').find(u => u.email === msg.recipient)?.name || msg.recipient;
+                    li.textContent = `[${new Date(msg.timestamp).toLocaleString()}] ${sender} to ${recipient}: ${msg.message}`;
+                    ul.appendChild(li);
+                });
+                messageList.appendChild(ul);
+            } else {
+                messageList.innerHTML += '<p class="text-gray-500">No messages yet.</p>';
+            }
+        }
+
+        // Show alert notification
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `fixed top-4 right-4 z-50 px-6 py-4 rounded-md shadow-lg ${
+                type === 'error' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
+            }`;
+            alertDiv.innerHTML = `
+                <div class="flex items-center">
+                    <i class="bi ${type === 'error' ? 'bi-exclamation-triangle' : 'bi-check-circle'} mr-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                setTimeout(() => alertDiv.remove(), 300);
+            }, 3000);
+        }
+
+        // Toggle sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            const brandText = document.getElementById('brand-text');
+            const userInfo = document.getElementById('user-info');
+            
+            sidebar.classList.toggle('sidebar-collapsed');
+            mainContent.classList.toggle('main-content-collapsed');
+            
+            if (sidebar.classList.contains('sidebar-collapsed')) {
+                brandText.classList.add('hidden');
+                userInfo.classList.add('hidden');
+            } else {
+                brandText.classList.remove('hidden');
+                userInfo.classList.remove('hidden');
+            }
+        }
+
+        // Mobile toggle
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('hidden');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            displayUser();
+            displayGroups();
+            loadMentorList();
+            loadRecipientOptions();
+            loadMessageList();
+            
+            document.getElementById('toggle-sidebar').addEventListener('click', toggleSidebar);
+            document.getElementById('mobile-toggle').addEventListener('click', toggleMobileSidebar);
+            
+            function checkScreenSize() {
+                if (window.innerWidth < 768) {
+                    document.getElementById('sidebar').classList.add('hidden');
+                    document.getElementById('main-content').classList.remove('main-content-collapsed');
+                } else {
+                    document.getElementById('sidebar').classList.remove('hidden');
+                }
+            }
+            
+            window.addEventListener('resize', checkScreenSize);
+            checkScreenSize();
+        });
+    </script>
+</body>
+</html>
